@@ -152,11 +152,11 @@ def dev = DeviceManager.getSpecificDevice( "hidDevice",{
 	return d
 })
 
-def cat =DeviceManager.getSpecificDevice( "MediumKat",{
+def cat =DeviceManager.getSpecificDevice( "SmallKat",{
 	//If the device does not exist, prompt for the connection
 	
 	MobileBase m = MobileBaseLoader.fromGit(
-		"https://github.com/keionbis/SmallKat.git",
+		"https://github.com/CommonWealthRobotics/SmallKat.git",
 		"Bowler/MediumKat.xml"
 		)
 	dev.simple.addEvent(1804, {
