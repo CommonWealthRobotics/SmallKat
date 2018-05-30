@@ -15,9 +15,8 @@ import com.neuronrobotics.sdk.common.Log;
 import Jama.Matrix;
 import com.neuronrobotics.sdk.addons.kinematics.imu.*
 
-enum WalkingState {
-    Rising,ToHome,ToNewTarget,Falling
-}
+
+
 
 if(args==null){
 	double stepOverHeight=10;
@@ -65,6 +64,11 @@ if(args==null){
 }
 
 return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
+	
+    int Rising=0,
+    int ToHome=1,
+    int ToNewTarget=2,
+    int Falling=3
 	boolean resetting=false;
 	double stepOverHeight=(double)args.get(0);
 	long stepOverTime=(long)args.get(1);
@@ -98,7 +102,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 	
 	Thread stepResetter=null;
 	boolean threadDone=false
-	WalkingState walkingState= WalkingState.Rising
+	int walkingState= Rising
 	MobileBase source 
 	TransformNR newPose =new TransformNR()
 	long miliseconds
@@ -363,7 +367,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 		def myPose=timout?new TransformNR():newPose
 
 		switch(walkingState){
-		case WalkingState.Rising:
+		case.Rising:
 			gaitIntermediatePercentage=gaitPercentage*4.0
 			if(gaitIntermediatePercentage>1)
 				gaitIntermediatePercentage=1
@@ -371,7 +375,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 			tf = compute(leg,gaitIntermediatePercentage,myPose)
 			tf.setZ(zLock+(stepOverHeight*gaitIntermediatePercentage));
 			if(gaitPercentage>0.25) {
-				walkingState= WalkingState.ToHome
+				walkingState= ToHome
 				//println "\nto Home " 
 				getUpLegs().collect{
 					if(it.checkTaskSpaceTransform(tf))
@@ -382,7 +386,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 				//computeUpdatePose()
 			}else
 				break;
-		case WalkingState.ToHome:
+		case ToHome:
 			gaitIntermediatePercentage=(gaitPercentage-0.25)*4.0
 			if(gaitIntermediatePercentage>1)
 				gaitIntermediatePercentage=1
@@ -401,7 +405,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 			tf.setZ(zLock+(stepOverHeight));
 			if(gaitPercentage>0.5) {
 				//println "To new target " +gaitIntermediatePercentage
-				walkingState= WalkingState.ToNewTarget
+				walkingState= ToNewTarget
 				getUpLegs().collect{
 					if(it.checkTaskSpaceTransform(tf))
 				 		cycleStartPoint.put(it,calcForward(it,tf))
@@ -411,7 +415,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 				//computeUpdatePose()
 			}else
 				break;
-		case WalkingState.ToNewTarget:
+		case ToNewTarget:
 			gaitIntermediatePercentage=(gaitPercentage-0.5)*4.0
 			if(gaitIntermediatePercentage>1)
 				gaitIntermediatePercentage=1
@@ -420,7 +424,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 			tf = compute(leg,localPercent,NewTmpPose)
 			tf.setZ(zLock+(stepOverHeight));
 			if(gaitPercentage>0.75) {
-				walkingState= WalkingState.Falling
+				walkingState= Falling
 				//println "Falling " +gaitIntermediatePercentage
 				getUpLegs().collect{
 					if(it.checkTaskSpaceTransform(tf))
@@ -432,7 +436,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 				
 			}
 			break;
-		case WalkingState.Falling:
+		case Falling:
 			gaitIntermediatePercentage=(gaitPercentage-0.75)*4.0
 			if(gaitIntermediatePercentage>1)
 				gaitIntermediatePercentage=1
@@ -441,7 +445,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 			//tf.setZ(zLock+stepOverHeight);
 			if(gaitPercentage>1) {
 				//tf = dynamicHome( leg)
-				walkingState=WalkingState.Rising
+				walkingState=Rising
 				//print "\r\nRising Walk cycle loop time "+(System.currentTimeMillis()-timeOfCycleStart) +" "
 				getUpLegs().collect{
 					if(it.checkTaskSpaceTransform(tf))
@@ -886,7 +890,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 						timeOfCycleStart= System.currentTimeMillis();
 						try{
 							threadDone=false;
-							walkingState= WalkingState.Rising
+							walkingState= Rising
 							stepCycyleActiveIndex=0;
 							println "Starting step reset thread"
 							timeOfCycleStart=System.currentTimeMillis()
