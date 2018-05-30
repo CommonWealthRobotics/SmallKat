@@ -143,7 +143,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 		)
 			velocity=update.getRotyAcceleration()
 		else
-			velocity=10
+			velocity=0
 		if(incrementTime>10){
 			timeOfLastIMUPrint= System.currentTimeMillis()
 			long timeSince=	(System.currentTimeMillis()-timeOfCycleStart)
