@@ -65,9 +65,9 @@ if(args==null){
 
 return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 	
-    int Rising=0,
-    int ToHome=1,
-    int ToNewTarget=2,
+    int Rising=0
+    int ToHome=1
+    int ToNewTarget=2
     int Falling=3
 	boolean resetting=false;
 	double stepOverHeight=(double)args.get(0);
@@ -367,7 +367,7 @@ return new com.neuronrobotics.sdk.addons.kinematics.IDriveEngine (){
 		def myPose=timout?new TransformNR():newPose
 
 		switch(walkingState){
-		case.Rising:
+		case Rising:
 			gaitIntermediatePercentage=gaitPercentage*4.0
 			if(gaitIntermediatePercentage>1)
 				gaitIntermediatePercentage=1
