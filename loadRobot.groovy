@@ -1,5 +1,5 @@
 @GrabResolver(name='sonatype', root='https://oss.sonatype.org/content/repositories/releases/')
-@Grab(group='com.neuronrobotics', module='SimplePacketComsJava', version='0.1.2')
+@Grab(group='com.neuronrobotics', module='SimplePacketComsJava', version='0.1.3')
 @Grab(group='org.hid4java', module='hid4java', version='0.5.0')
 
 import edu.wpi.SimplePacketComs.*;
