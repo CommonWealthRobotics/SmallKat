@@ -197,7 +197,7 @@ return new ICadGenerator(){
 				body.setManipulator(b.getRootListener());
 				body.setColor(javafx.scene.paint.Color.WHITE)
 				allCad = [body ] as ArrayList<CSG>
-				for(int i=0;i<parts.size();i++){
+				for(int i=0;i<allCad.size();i++){
 					allCad.get(i).setColor(javafx.scene.paint.Color.GRAY)
 				}
 		}catch(Throwable t){
