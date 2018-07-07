@@ -196,11 +196,13 @@ return new ICadGenerator(){
 		
 				body.setManipulator(b.getRootListener());
 				body.setColor(javafx.scene.paint.Color.WHITE)
-				def parts = [body ] as ArrayList<CSG>
+				allCad = [body ] as ArrayList<CSG>
 				for(int i=0;i<parts.size();i++){
-					parts.get(i).setColor(javafx.scene.paint.Color.GRAY)
+					allCad.get(i).setColor(javafx.scene.paint.Color.GRAY)
 				}
-		}catch(Throwable t){}
-		return parts;
+		}catch(Throwable t){
+			BowlerStudio.printStackTrace(t)	
+		}
+		return allCad;
 	}
 };
